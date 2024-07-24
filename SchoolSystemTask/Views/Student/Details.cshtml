@@ -1,0 +1,42 @@
+﻿@model StudentViewModel
+<div class="row">
+    <div class="col-6">
+
+        <div class="form-group">
+            <label asp-for="@Model.Name" class="col-form-label"> </label>
+            <input asp-for="@Model.Name" class="form-control" readonly />
+
+
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Email" class="col-form-label"> </label>
+            <input asp-for="@Model.Email" class="form-control" readonly />
+
+
+        </div>
+
+        <div class="form-group">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" disabled checked="@Model.Enrolled">
+                <label class="form-check-label" for="enrolledCheckbox">Enrolled</label>
+            </div>
+
+
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.City" class="col-form-label"> </label>
+            <input asp-for="@Model.City" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Gender" class="col-form-label"> </label>
+            <input asp-for="@Model.Gender" class="form-control" readonly />
+        </div>
+
+    </div>
+
+    <br />
+
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-light">Update</a>
+    <a asp-action="Index"> Back</a>
+
+</div>
