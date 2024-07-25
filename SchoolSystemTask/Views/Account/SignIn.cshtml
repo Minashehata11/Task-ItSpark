@@ -18,10 +18,38 @@
         <input type="password" asp-for=@Model.PassWord class="form-control" placeholder="Enter password">
         <span asp-validation-for="@Model.PassWord"></span>
     </div>
-  
+    <hr />
     <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+    <div class="row pt-2">
+        <div class="col-md-8 offset-md-2">
+            <h5>External login</h5>
+
+            @if (Model.Schemes.Count() == 0)
+            {
+                <div>No external login providers have configured</div>
+            }
+            else
+            {
+                <form asp-action="ExternalLogin">
+                    <div>
+                        @foreach (var provider in Model.Schemes)
+                        {
+                            <button type="submit"
+                                    class="btn btn-primary"
+                                    name="provider"
+                                    value="@provider.Name"
+                                    title="Login using your @provider.Name account">
+                                @provider.DisplayName
+                            </button>
+                        }
+                    </div>
+                </form>
+            }
+
+        </div>
 
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
     }
-</form>

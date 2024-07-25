@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
 using SchoolSystemStak.DAL.Models.Identity;
 using SchoolSystemTask.PL.ViewModels;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace SchoolSystemTask.PL.Controllers
 {
@@ -62,7 +65,11 @@ namespace SchoolSystemTask.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> SignIn()
         {
-            return View(new SignInViewModel());
+            var Login = new SignInViewModel()
+            {
+                Schemes = await _signInManager.GetExternalAuthenticationSchemesAsync(),
+            };
+            return View(Login);
         }
 
         [HttpPost]
@@ -78,8 +85,8 @@ namespace SchoolSystemTask.PL.Controllers
                     return View(data);
                 }
 
-               
-                var result = await _signInManager.CheckPasswordSignInAsync(user, data.PassWord,true);
+
+                var result = await _signInManager.PasswordSignInAsync(user, data.PassWord, true, false);
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Home");
                 else
@@ -88,6 +95,84 @@ namespace SchoolSystemTask.PL.Controllers
             }
 
             return View(data);
+        }
+        public IActionResult ExternalLogin(string provider, string returnUrl = "")
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = "", string remoteError = "")
+        {
+
+            var loginVM = new SignInViewModel()
+            {
+                Schemes = await _signInManager.GetExternalAuthenticationSchemesAsync()
+            };
+
+            if (!string.IsNullOrEmpty(remoteError))
+            {
+                ModelState.AddModelError("", $"Error from extranal login provide: {remoteError}");
+                return View("SignIn", loginVM);
+            }
+
+            //Get login info
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError("", $"Error from extranal login provide: {remoteError}");
+                return View("SignIn", loginVM);
+            }
+
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (signInResult.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+            {
+                var userEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (!string.IsNullOrEmpty(userEmail))
+                {
+                    var user = await _userManager.FindByEmailAsync(userEmail);
+
+                    if (user == null)
+                    {
+                        user = new ApplicationUser()
+                        {
+                            UserName = userEmail,
+                            Email = userEmail,
+                            EmailConfirmed = true
+                        };
+
+                        await _userManager.CreateAsync(user);
+                    }
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+
+            ModelState.AddModelError("", $"Something went wrong");
+            return View("SignIn", loginVM);
+        }
+
+        public async Task<IActionResult> SignOut()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("SignIn");
+        }
+
+
+
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

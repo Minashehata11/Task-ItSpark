@@ -18,6 +18,12 @@ builder.Services.AddDbContext<ShcoolDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();  
+builder.Services.AddIdentity<ApplicationUser,IdentityRole>(option =>
+{
+    option.Password.RequireUppercase = true;
+    
+}).AddEntityFrameworkStores<ShcoolDbContext>()
+.AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 //builder.Services.AddScoped<ILogger,Logger<>();
 
@@ -29,21 +35,20 @@ builder.Services.AddMvc().AddNToastNotifyToastr(new ToastrOptions()
     CloseButton = true
 
 });
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, option =>
-    {
-        option.LoginPath = new PathString("/Account/SignIn");
-        option.AccessDeniedPath = new PathString("/Home/error");
-
-    });
-
-builder.Services.AddIdentity<ApplicationUser,IdentityRole>(option =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    option.Password.RequireUppercase = true;
-    
-}).AddEntityFrameworkStores<ShcoolDbContext>()
-.AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider);
 
+    options.LoginPath = new PathString("/Account/SignIn");
+    options.AccessDeniedPath = new PathString("/Account/AccessDenied");
+});
+
+builder.Services.AddAuthentication()
+    .AddGoogle(options=>
+    {
+        options.ClientId = builder.Configuration["Auth:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
+    });
+builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

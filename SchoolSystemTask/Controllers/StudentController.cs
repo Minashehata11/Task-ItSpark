@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NToastNotify;
@@ -11,6 +12,7 @@ using SchoolSystemTask.PL.ViewModels;
 
 namespace SchoolSystemTask.PL.Controllers
 {
+      [Authorize(Roles ="Admin")]
     public class StudentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
