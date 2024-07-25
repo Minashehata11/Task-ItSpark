@@ -132,6 +132,9 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="NoStudentsFound" xml:space="preserve">
+    <value>No Students Found</value>
+  </data>
   <data name="Students" xml:space="preserve">
     <value>Students</value>
   </data>

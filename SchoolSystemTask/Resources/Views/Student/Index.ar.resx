@@ -132,6 +132,9 @@
   <data name="Name" xml:space="preserve">
     <value>الاسم</value>
   </data>
+  <data name="NoStudentsFound" xml:space="preserve">
+    <value>لا يوجد طلاب </value>
+  </data>
   <data name="Students" xml:space="preserve">
     <value>الطلاب</value>
   </data>

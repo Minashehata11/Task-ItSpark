@@ -1,80 +1,76 @@
 ﻿@model EditViewModel
-<div class="row">
-    <div class="col-6">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            
-            @{
-                var Classes = new SelectList(ViewBag.classes, "Id", "Name");
-            }
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <input type="hidden" asp-for="@Model.Id" />
-            <div class="form-group">
-                <label asp-for="@Model.Name" class="col-form-label"> </label>
-                <input asp-for="@Model.Name" class="form-control" />
-                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>Edit Student</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                @{
+                    var Classes = new SelectList(ViewBag.classes, "Id", "Name");
+                }
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <input type="hidden" asp-for="Id" />
 
-            </div>
-         
-
-            <div class="form-group">
-                <label asp-for="@Model.Address" class="col-form-label"> </label>
-                <input asp-for="@Model.Address" class="form-control" />
-                <span asp-validation-for="@Model.Address" class="text-danger"></span>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.DateOfBirth" class="col-form-label"> </label>
-                <input asp-for="@Model.DateOfBirth" class="form-control" />
-                <span asp-validation-for="@Model.DateOfBirth" class="text-danger"></span>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.NationalId" class="col-form-label"> </label>
-                <input asp-for="@Model.NationalId" class="form-control" />
-                <span asp-validation-for="@Model.NationalId" class="text-danger"></span>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Address" class="col-form-label"> </label>
-                <input asp-for="@Model.Address" class="form-control" />
-                <span asp-validation-for="@Model.Address" class="text-danger"></span>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Remarks" class="col-form-label"> </label>
-                <input asp-for="@Model.Remarks" class="form-control" />
-                <span asp-validation-for="@Model.Remarks" class="text-danger"></span>
-
-            </div>
-           
-            <div class="form-group">
-                <label asp-for="@Model.ClassId" class="col-form-label"> </label>
-                <select asp-for="@Model.ClassId" asp-items="Classes" class="form-control">
-                    <option>--select Department--</option>
-
-                </select>
-                <span asp-validation-for="@Model.ClassId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="@Model.FileImage" class="col-form-label"> </label>
-                <input type="file" asp-for="@Model.FileImage" class="form-control" />
-            </div>
-            <div class="form-group">
-                <div class="form-check">
-                    <input asp-for="@Model.Enrolled" type="checkbox" class="form-check-input" />
-                    <label asp-for="@Model.Enrolled" class="form-check-label">Enrolled</label>
+                <div class="form-group">
+                    <label asp-for="Name" class="col-form-label">Name</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-            </div>
-            <br />
 
+                <div class="form-group">
+                    <label asp-for="Address" class="col-form-label">Address</label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
 
-            <input type="submit" value="Update" class="btn btn-primary" />
-            <a asp-action="Index" class="btn btn-light">Back To List</a>
+                <div class="form-group">
+                    <label asp-for="DateOfBirth" class="col-form-label">Date of Birth</label>
+                    <input asp-for="DateOfBirth" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
 
-        </form>
+                <div class="form-group">
+                    <label asp-for="NationalId" class="col-form-label">National ID</label>
+                    <input asp-for="NationalId" class="form-control" />
+                    <span asp-validation-for="NationalId" class="text-danger"></span>
+                </div>
 
+                <div class="form-group">
+                    <label asp-for="Remarks" class="col-form-label">Remarks</label>
+                    <input asp-for="Remarks" class="form-control" />
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ClassId" class="col-form-label">Class</label>
+                    <select asp-for="ClassId" asp-items="Classes" class="form-control">
+                        <option value="">-- Select Class --</option>
+                    </select>
+                    <span asp-validation-for="ClassId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FileImage" class="col-form-label">Upload Image</label>
+                    <input type="file" asp-for="FileImage" class="form-control-file" />
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input asp-for="Enrolled" type="checkbox" class="form-check-input" />
+                        <label asp-for="Enrolled" class="form-check-label">Enrolled</label>
+                    </div>
+                </div>
+
+                <div class="form-group mt-4">
+                    <input type="submit" value="Update" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Back To List</a>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
+<div>
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
     }

@@ -1,55 +1,60 @@
 ﻿@model SignInViewModel
-@{
+@* @{
     ViewData["Title"] = "SignIn";
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
+ *@
+<h1 class="text-center mb-4">Sign In</h1>
 
-<h1>SignIn</h1>
-
-<form asp-action="SignIn">
+<form asp-action="SignIn" class="form-signin">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        <label asp-for=@Model.Email>Email address</label>
-        <input asp-for=@Model.Email type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-        <span asp-validation-for="@Model.Email"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for=@Model.PassWord>password address</label>
-        <input type="password" asp-for=@Model.PassWord class="form-control" placeholder="Enter password">
-        <span asp-validation-for="@Model.PassWord"></span>
-    </div>
-    <hr />
-    <button type="submit" class="btn btn-primary">Submit</button>
 
+    <div class="form-group mb-3">
+        <label asp-for="@Model.Email" class="form-label">Email address</label>
+        <input asp-for="@Model.Email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <span asp-validation-for="@Model.Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-4">
+        <label asp-for="@Model.PassWord" class="form-label">Password</label>
+        <input asp-for="@Model.PassWord" type="password" class="form-control" placeholder="Enter password">
+        <span asp-validation-for="@Model.PassWord" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Submit</button>
 </form>
-    <div class="row pt-2">
-        <div class="col-md-8 offset-md-2">
-            <h5>External login</h5>
 
-            @if (Model.Schemes.Count() == 0)
-            {
-                <div>No external login providers have configured</div>
-            }
-            else
-            {
-                <form asp-action="ExternalLogin">
-                    <div>
-                        @foreach (var provider in Model.Schemes)
-                        {
-                            <button type="submit"
-                                    class="btn btn-primary"
-                                    name="provider"
-                                    value="@provider.Name"
-                                    title="Login using your @provider.Name account">
-                                @provider.DisplayName
-                            </button>
-                        }
-                    </div>
-                </form>
-            }
+<div class="row pt-4">
+    <div class="col-md-8 offset-md-2">
+        <h5 class="text-center mb-3">External Login</h5>
 
-        </div>
+        @if (Model.Schemes.Count() == 0)
+        {
+            <div class="alert alert-info text-center">No external login providers have been configured.</div>
+        }
+        else
+        {
+            <form asp-action="ExternalLogin">
+                <div class="d-flex justify-content-center flex-wrap">
+                    @foreach (var provider in Model.Schemes)
+                    {
+                        <button type="submit"
+                                class="btn btn-outline-primary m-2"
+                                name="provider"
+                                value="@provider.Name"
+                                title="Login using your @provider.Name account">
+                            <i class="bi bi-google me-2"></i> @provider.DisplayName
+                        </button>
+                    }
+                </div>
+            </form>
+        }
+    </div>
+</div>
 
+<div class="text-center mt-4">
+    <a asp-controller="Account" asp-action="SignUp" class="btn btn-link">Register</a>
+</div>
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />
     }
