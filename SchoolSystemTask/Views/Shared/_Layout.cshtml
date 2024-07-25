@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using SchoolSystemStak.DAL.Models.Identity
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject SignInManager<ApplicationUser> SignInManger
+@inject IViewLocalizer localizer
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,16 +27,21 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@localizer["Home"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">@localizer["Privacy"]</a>
                         </li>
+
+                      
+                        <div>
+                            <partial name="_SelectLanguagePartial" />
+                        </div>
                     </ul>
                     @if (SignInManger.IsSignedIn(User) && User.IsInRole("Admin"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Students</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">@localizer["Students"]</a>
                         </li>
                       
                     }
@@ -40,11 +49,14 @@
                     {
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-light btn btn-danger" asp-area="" asp-controller="Account" asp-action="SignOut"> Sign Out</a>
+                                <a class="nav-link text-light btn btn-danger" asp-area="" asp-controller="Account" asp-action="SignOut"> @localizer["SignOut"]</a>
                             </li>
-
+                            <div class="navbar">
+                                <ul>
+                                    <li>Hello, @TempData["UserName"]!</li>
+                                </ul>
+                            </div>
                         </ul>
-
 
                     }
                 </div>

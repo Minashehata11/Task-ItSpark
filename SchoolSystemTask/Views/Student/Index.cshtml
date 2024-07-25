@@ -1,8 +1,11 @@
 ﻿@using SchoolSystemTask.BAL.Specefication
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
 @model IEnumerable<StudentViewModel>
-<h1>Students</h1>
+<h1>@localizer["Students"]</h1>
 <br />
-<a asp-action="Create" class="btn btn-primary"> Add New Student</a>
+<a asp-action="Create" class="btn btn-primary"> @localizer["AddStudent"]</a>
 <br />
 <br />
 
@@ -36,11 +39,11 @@
         <thead>
             <tr>
 
-                <th scope="col">Name</th>
+                <th scope="col">@localizer["Name"]</th>
 
-                <th scope="col">city</th>
-                <th scope="col">Gender</th>
-                <th scope="col">Class</th>
+                <th scope="col">@localizer["City"]</th>
+                <th scope="col">@localizer["Gender"]</th>
+                <th scope="col">@localizer["Class"]</th>
 
                 <th scope="col">Details</th>
                 <th scope="col">Update</th>
